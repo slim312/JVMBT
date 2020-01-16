@@ -1,4 +1,4 @@
 commands:
-    gradle: "gradle"
+    gradle: "gradle -b"
     maven: "mvn package -f"
     sbt: "sbt"
