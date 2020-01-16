@@ -8,7 +8,7 @@ class Request(object):
         self.branch = input_json['branch']
         self.transaction_id = input_json['transactionId']
         self.box_id = input_json['boxId']
-        self.run_script_path = self.__get_run_script_path(input_json['runScriptPath'])
+        self.run_script_path = self.__get_run_script_path(input_json['run_script_path'])
 
     def __get_run_script_path(self, run_script_relative_path: str) -> str:
         return os.path.join(self.__get_local_path(), run_script_relative_path)
