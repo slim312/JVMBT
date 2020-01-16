@@ -11,7 +11,8 @@ class BuilderFactory(object):
     def initialize_builder(self):
         builder = self._get_builder()
         cmd = self.config.commands[self.request.build_type]
-        self.builder = builder(cmd=cmd, run_file=self.request.local_path)
+        self.builder = builder(cmd, self.request.run_script_path)
+        return self.builder
 
     def _get_builder(self):
         builds = {

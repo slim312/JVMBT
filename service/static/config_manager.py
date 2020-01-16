@@ -12,5 +12,9 @@ class ConfigManager(object):
         with open(self._config_path) as _config_file:
             return yaml.load(_config_file, Loader=yaml.FullLoader)
 
+    @property
+    def commands(self):
+        return self.config['commands']
+
 
 config = ConfigManager()
