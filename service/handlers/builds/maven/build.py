@@ -6,4 +6,5 @@ class MavenBuild(Build):
         super().__init__(maven_build_cmd, pom_xml_path)
 
     def build(self):
-        pass
+        cmd = [self.cmd, self.run_file]
+        self.process_executor.execute(cmd=cmd)

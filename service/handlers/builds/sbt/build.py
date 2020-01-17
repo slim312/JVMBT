@@ -6,4 +6,5 @@ class SbtBuild(Build):
         super().__init__(sbt_build_cmd, sbt_build_file_path)
 
     def build(self):
-        pass
+        cmd = [self.cmd, self.run_file]
+        self.process_executor.execute(cmd=cmd)

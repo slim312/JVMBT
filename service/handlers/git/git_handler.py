@@ -13,3 +13,7 @@ class GitHandler(object):
             os.makedirs(self._target_location)
         repo = Repo.clone_from(url=self._url, to_path=self._target_location, branch=self._branch)
         return self._target_location
+
+    @property
+    def local_base_path(self):
+        return self._target_location

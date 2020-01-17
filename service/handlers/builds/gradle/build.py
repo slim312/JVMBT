@@ -1,3 +1,5 @@
+from subprocess import Popen, PIPE
+
 from ..build import Build
 
 
@@ -6,4 +8,5 @@ class GradleBuild(Build):
         super().__init__(gradle_build_cmd, gradle_build_file_path)
 
     def build(self):
-        pass
+        cmd = [self.cmd, self.run_file]
+        self.process_executor.execute(cmd=cmd)
