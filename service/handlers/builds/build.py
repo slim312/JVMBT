@@ -1,6 +1,6 @@
 import logging
-import shutil
-import stat
+# import shutil
+# import stat
 import os
 
 # Internal packages:
@@ -30,5 +30,6 @@ class Build(object):
                 os.system(f'rm -rf "{build_base_path}"')
             else:
                 raise OSError(f"Unrecognized OS: {os.name}")
+            logger.debug("Cleanup complete!")
         except OSError as e:
             logger.warning(f"Error thrown while running cleanup: {e}")

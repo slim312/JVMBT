@@ -8,6 +8,13 @@ from service.static import Request
 logger = logging.getLogger(__name__)
 
 
+def mark_success(request, hdfs_jar_location):
+    return {
+        **request.__dict__,
+        "hdfs_location": hdfs_jar_location
+    }
+
+
 def run_build(request: Request) -> None:
     logger.info(f"Build operation started for TransactionId: {request.transaction_id}, BoxId: {request.box_id}")
     builder = BuilderFactory(request=request, config_manager=config).get_builder()

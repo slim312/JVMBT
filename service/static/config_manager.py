@@ -13,8 +13,18 @@ class ConfigManager(object):
             return yaml.load(_config_file, Loader=yaml.FullLoader)
 
     @property
-    def commands(self):
-        return self.config['commands']
+    def build_commands(self):
+        return self.config['commands']['build']
+
+    @property
+    def rebuild_commands(self):
+        """
+        The reason behind this method is that these tools have built-in
+        optimization for recompiling projects, therefore we should utilize
+        this capability to improve runtime (Different from build_commands
+        that are for first time compilation of a project).
+        """
+        return self.config['commands']['rebuild']
 
 
 config = ConfigManager()
