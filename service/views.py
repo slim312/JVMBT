@@ -27,7 +27,7 @@ class SubmitBuild(Resource):
             logger.debug(f"Request built! Running build (transaction: {args.transactionId})...")
             app.logger.info(f"POST request received! Arguments: {args}")
             result = run_build(request=request)
-
+            return result, status.HTTP_200_OK
         except Exception as e:
             return {"error": str(e)}, status.HTTP_500_INTERNAL_SERVER_ERROR
 

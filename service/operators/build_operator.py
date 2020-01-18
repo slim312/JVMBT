@@ -8,14 +8,14 @@ from service.static import Request
 logger = logging.getLogger(__name__)
 
 
-def mark_success(request, hdfs_jar_location):
+def mark_success(request: Request, hdfs_jar_location: str) -> dict:
     return {
         **request.__dict__,
         "hdfs_location": hdfs_jar_location
     }
 
 
-def run_build(request: Request) -> None:
+def run_build(request: Request) -> dict:
     logger.info(f"Build operation started for TransactionId: {request.transaction_id}, BoxId: {request.box_id}")
     builder = BuilderFactory(request=request, config_manager=config).get_builder()
     logger.info("Builder fetched!")
@@ -26,10 +26,12 @@ def run_build(request: Request) -> None:
         git_handler.clone()
         logger.info("Git repo cloned! Running builder...")
         builder.build()
+        jar_hdfs_location = ""
     except Exception as e:
         logger.error(f"Error in build process: {e}")
         raise e
     else:
         logger.info(f"Build operation finished for TransactionId: {request.transaction_id}, BoxId: {request.box_id}")
+        return mark_success(request, jar_hdfs_location)
     finally:
         builder.cleanup(build_base_path=git_handler.local_base_path)
