@@ -14,6 +14,7 @@ class HdfsUploadError(HdfsFileSystemError):
     pass
 
 
+# hdfs3.core.FileNotFoundError
 class HdfsFileUploadError(HdfsUploadError):
     pass
 

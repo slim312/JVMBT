@@ -5,4 +5,4 @@ pyyaml
 gevent
 flask-api
 GitPython
-hdfs3
+hdfs
