@@ -18,4 +18,4 @@ class Executor(object):
             stderr = process.stderr.read().decode('utf-8')
         logger.debug("Command completed!")
         if len(stderr) > 0:
-            raise RuntimeError(f"Process executor has failed with errors: {stderr}")
+            raise RuntimeError(f"Process executor has exited with errors: {stderr}")
