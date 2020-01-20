@@ -2,8 +2,7 @@ import logging
 
 # Internal packages:
 from service.handlers import BuilderFactory, GitHandler, upload_folder_to_hdfs
-from service.static import Request, create_kerberos_token
-from service.static.config_manager import ConfigManager
+from service.static import Request
 
 logger = logging.getLogger(__name__)
 
