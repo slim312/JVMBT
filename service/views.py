@@ -3,6 +3,7 @@ from flask_api import status
 import logging
 
 # Internal packages:
+from service.static.config_manager import ConfigManager
 from service.operators import run_build
 from service.static import Request
 from service import api, app
@@ -11,6 +12,7 @@ logger = logging.getLogger(__name__)
 abst_request_parser = reqparse.RequestParser(bundle_errors=True)
 abst_request_parser.add_argument('transactionId', type=str, required=True)
 abst_request_parser.add_argument('boxId', type=str, required=True)
+abst_request_parser.add_argument('environment', type=str, required=True)
 
 
 class SubmitBuild(Resource):
@@ -23,7 +25,7 @@ class SubmitBuild(Resource):
         args = submit_parser.parse_args()
         try:
             logger.debug(f"Arguments parsed: {args}")
-            request = Request(input_args=args)
+            request = Request(input_args=args, config=ConfigManager(env=args.environment))
             logger.debug(f"Request built! Running build (transaction: {args.transactionId})...")
             app.logger.info(f"POST request received! Arguments: {args}")
             result = run_build(request=request)

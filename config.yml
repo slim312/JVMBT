@@ -1,9 +1,24 @@
 commands:
     build:
-        gradle: "gradle -b"
-        maven: "mvn package -f"
-        sbt: "sbt"
+        main_command:
+            gradle: "gradle -b"
+            maven: "mvn package -f"
+            sbt: "sbt"
+        additional_commands:
+            output_path:
+                gradle: "-DoutputDirectory={out}"
+                maven: "-DoutputDirectory={out}"
+                sbt: ""
     rebuild:
         gradle: ""
         maven: ""
         sbt: ""
+general:
+    paths:
+        hdfs:
+            prod:
+                base_hdfs_path: "/user/america/projects"
+            test:
+                base_hdfs_path: "/user/america/projects"
+            dev:
+              base_hdfs_path: "/user/america/projects"

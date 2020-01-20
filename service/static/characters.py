@@ -1,0 +1,2 @@
+HDFS_PATH_DELIMITER = "/"
+ROOT = "/"

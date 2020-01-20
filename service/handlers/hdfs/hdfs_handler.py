@@ -3,12 +3,10 @@ import logging
 import os
 
 # Internal packages:
-from service.static import create_kerberos_token
+from service.static import create_kerberos_token, HDFS_PATH_DELIMITER, ROOT
 from .exceptions import *
 
 logger = logging.getLogger(__name__)
-HDFS_PATH_DELIMITER = "/"
-ROOT = "/"
 ADDRESS_URL = "http://{namenode}:{port}"
 
 
@@ -50,14 +48,31 @@ class HdfsHandler(object):
     def __get_file_name_from_path(path):
         return path.split(HDFS_PATH_DELIMITER)[-1]
 
-    def upload_file(self, local_path: str, hdfs_path: str, overwrite=True) -> None:
+    def upload_file(self, local_path: str, hdfs_path: str, overwrite: bool) -> None:
         self.__create_directory_tree(leaf_dir=self.__get_hdfs_parent_dir(path=hdfs_path))
-        # filename = self.__get_file_name_from_path(path=local_path)
-        # if self.conn.exists(path=hdfs_path):
-        #     raise HdfsUploadError(f"File {filename} already exists at location {hdfs_path}!")
         if not os.path.exists(local_path):
             raise FileNotFoundError(f"Local file {local_path} not found!")
         self.conn.upload(local_path=local_path, hdfs_path=hdfs_path, overwrite=overwrite)
 
     def upload_folder(self, local_folder_path: str, hdfs_path: str, overwrite=True) -> None:
         self.conn.upload(local_path=local_folder_path, hdfs_path=hdfs_path, overwrite=overwrite)
+
+
+def upload_folder_to_hdfs(config, environment, local_path, hdfs_path, overwrite=True):
+    logger.info(f"Uploading {local_path} to {hdfs_path}...")
+    logger.debug(f"Environment: {environment}, overwrite: {overwrite}")
+    nn_host, nn_port = config.get_namenode()
+    admin_user, admin_pwd = config.get_admin_user()
+    with HdfsHandler(
+            host=nn_host,
+            port=nn_port,
+            user=admin_user,
+            token=create_kerberos_token(username=admin_user, pwd=admin_pwd)
+    ) as hdfs:
+        logger.debug(f"HdfsHandler Created: {hdfs.nn_host}:{hdfs.nn_port} with user {hdfs.user}")
+        hdfs.upload_folder(
+            local_folder_path=local_path,
+            hdfs_path=hdfs_path,
+            overwrite=overwrite
+        )
+    logger.info(f"Jar's upload to {hdfs_path} complete!")
